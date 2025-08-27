@@ -27,12 +27,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-u#3w-3r2ez93i&zd5_%98yqjqbxx45*2ru%=kk*7o$9e$zem++'
 
+PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "omar-suyuf-footballnews.pbp.cs.ui.ac.id"]
 
 # Application definition
 
@@ -78,12 +79,30 @@ WSGI_APPLICATION = 'football_news.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration
+if PRODUCTION:
+    # Production: gunakan PostgreSQL dengan kredensial dari environment variables
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT'),
+            'OPTIONS': {
+                'options': f"-c search_path={os.getenv('SCHEMA', 'public')}"
+            }
+        }
     }
-}
+else:
+    # Development: gunakan SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
