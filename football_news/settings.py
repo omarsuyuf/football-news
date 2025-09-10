@@ -30,10 +30,14 @@ SECRET_KEY = 'django-insecure-u#3w-3r2ez93i&zd5_%98yqjqbxx45*2ru%=kk*7o$9e$zem++
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True     
 
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "omar-suyuf-footballnews.pbp.cs.ui.ac.id"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://omar-suyuf-footballnews.pbp.cs.ui.ac.id"
+]
 
 # Application definition
 
@@ -62,7 +66,7 @@ ROOT_URLCONF = 'football_news.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
