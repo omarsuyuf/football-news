@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
 import os
 from dotenv import load_dotenv
 # Load environment variables from .env file
@@ -25,18 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u#3w-3r2ez93i&zd5_%98yqjqbxx45*2ru%=kk*7o$9e$zem++'
-
-PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
+SECRET_KEY = 'django-insecure-*7hh5o(vyj48r@$f4tc=u#poa+@rac)*qinj==jx7e5j&j-pe_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True     
+PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
+DEBUG = True
 
-
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "omar-suyuf-footballnews.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "oscar-glad-footballnews.pbp.cs.ui.ac.id", "10.0.2.2",]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://omar-suyuf-footballnews.pbp.cs.ui.ac.id"
+    "https://oscar-glad-footballnews.pbp.cs.ui.ac.id"
 ]
 
 # Application definition
@@ -47,27 +44,35 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'main'
+    'django.contrib.staticfiles', 'main', 'authentication',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'football_news.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], 
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +150,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+
 if DEBUG:
     STATICFILES_DIRS = [
         BASE_DIR / 'static' # merujuk ke /static root project pada mode development
